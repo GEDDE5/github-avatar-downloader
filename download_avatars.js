@@ -13,13 +13,11 @@ function downloadImageByURL(url, filePath) {
     .on('error', function(err) {
       throw err;
     })
-    .on('response', function(response) {
-      console.log(response.statusCode);
-    })
-    .pipe(fs.createWriteStream(filePath));
+    .pipe(fs.createWriteStream(filePath))
+    .on('finish', function() {
+      console.log('Download of ' + filePath + ' complete');
+    });
 }
-
-downloadImageByURL('https://avatars.githubusercontent.com/u/327019?v=3', 'avatars/test.jpg');
 
 function getRepoContributors(repoOwner, repoName, cb) {
   let requestURL = `https://${GITHUB_USER}:${GITHUB_TOKEN}@api.github.com/repos/${repoOwner}/${repoName}/contributors`;
@@ -34,12 +32,14 @@ function getRepoContributors(repoOwner, repoName, cb) {
     let data = JSON.parse(body);
     cb(err, data);
   });
+
 }
 
 function cb(err, result) {
   result.forEach(r => {
-    console.log(r.avatar_url);
-  })
+    let avatarPath = 'avatars/' + r.login + '.jpg';
+    downloadImageByURL(r.avatar_url, avatarPath);
+  });
 }
 
-//getRepoContributors('nodejs', 'node', cb);
+getRepoContributors('nodejs', 'node', cb);
