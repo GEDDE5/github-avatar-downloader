@@ -5,9 +5,6 @@ var GITHUB_USER = 'GEDDE5';
 var GITHUB_TOKEN = '4f8e924b6235e2548083b44e2d1ac748349498fc';
 var USER_AGENT = GITHUB_USER;
 
-
-console.log('Welcome to the GitHub Avatar Downloader!');
-
 function downloadImageByURL(url, filePath) {
   request.get(url)
     .on('error', function(err) {
@@ -32,7 +29,6 @@ function getRepoContributors(repoOwner, repoName, cb) {
     let data = JSON.parse(body);
     cb(err, data);
   });
-
 }
 
 function cb(err, result) {
@@ -42,4 +38,14 @@ function cb(err, result) {
   });
 }
 
-getRepoContributors('nodejs', 'node', cb);
+// Ensures user provides two arguments
+if (process.argv.length !== 4) {
+  throw 'Error: Two arguments required: node download_avatars.js <repo owner> <repo name>';
+} else {
+  var owner = process.argv[2];
+  var repo = process.argv[3];
+}
+
+getRepoContributors(owner, repo, cb);
+
+
