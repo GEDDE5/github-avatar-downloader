@@ -17,28 +17,15 @@ function getRepoContributors(repoOwner, repoName, cb) {
   }
 
   request.get(options, function(err, response, body) {
-    if (err) throw err;
-    console.log(JSON.parse(body));
+    let data = JSON.parse(body);
+    cb(err, data);
   });
 }
 
-
-// This doesn't work for some reason :()
-//   request.get(options)
-//     .on('error', function(err) {
-//       throw err;
-//     })
-//     .on('response', function(response) {
-//       console.log('Response status code:', response.statusCode);
-//     })
-//     .on('body', function(body) {
-//       console.log(body);
-//     });
-//     .pipe(fs.createWriteStream('response.json'));
-
 function cb(err, result) {
-  console.log('Errors: ' + err);
-  console.log('Result: ' + result);
+  result.forEach(r => {
+    console.log(r.avatar_url);
+  })
 }
 
 getRepoContributors('nodejs', 'node', cb);
