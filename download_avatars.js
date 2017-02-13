@@ -22,10 +22,12 @@ function getRepoContributors(repoOwner, repoName, cb) {
   let options = {
     url: requestURL,
     headers: { 'User-Agent': USER_AGENT }
-  }
+  };
 
   request.get(options, function(err, response, body) {
-    if (err) throw err;
+    if (err) {
+      throw err;
+    }
     let data = JSON.parse(body);
     cb(err, data);
   });
@@ -39,11 +41,13 @@ function cb(err, result) {
 }
 
 // Ensures user provides two arguments
+var owner;
+var repo;
 if (process.argv.length !== 4) {
   throw 'Error: Two arguments required: node download_avatars.js <repo owner> <repo name>';
 } else {
-  var owner = process.argv[2];
-  var repo = process.argv[3];
+  owner = process.argv[2];
+  repo = process.argv[3];
 }
 
 getRepoContributors(owner, repo, cb);
