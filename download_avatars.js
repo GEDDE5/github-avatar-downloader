@@ -25,8 +25,11 @@ contributors.getRepoContributors(owner, repo, (err, contribs) => {
     fs.mkdirSync(DEST_PATH);
   }
   if (contribs.message === 'Not Found') {
-    throw 'The provided owner/repo does not exist';
-  } else {
+    throw 'The provided owner/repo does not exist; please try again.';
+  } else if (contribs.message === 'Bad credentials') {
+    throw 'Error: bad credentials';
+  }
+    else {
     contribs.forEach(c => {
       let avatarPath = 'avatars/' + c.login + '.jpg';
       contributors.downloadAvatars(c.avatar_url, avatarPath);
