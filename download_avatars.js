@@ -10,8 +10,12 @@ contributors.getRepoContributors(owner, repo, (err, contribs) => {
   if (err) {
     throw err;
   }
-  contribs.forEach(c => {
-    let avatarPath = 'avatars/' + c.login + '.jpg';
-    contributors.downloadAvatars(c.avatar_url, avatarPath);
-  });
+  if (contribs.message === 'Not Found') {
+    throw 'The provided owner/repo does not exist';
+  } else {
+    contribs.forEach(c => {
+      let avatarPath = 'avatars/' + c.login + '.jpg';
+      contributors.downloadAvatars(c.avatar_url, avatarPath);
+    });
+  }
 });
