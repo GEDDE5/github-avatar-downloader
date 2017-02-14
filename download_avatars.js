@@ -1,6 +1,10 @@
 const contributors = require('./lib/contributors_api');
 const fs = require('fs');
 
+if(!fs.existsSync('./.env')) {
+  throw '.env file could not be found'
+}
+
 console.log('------------------------------------------');
 console.log('| Welcome to the GitHub Avatar Downloader |');
 console.log('------------------------------------------');
