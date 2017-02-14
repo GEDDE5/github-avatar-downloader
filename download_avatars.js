@@ -1,4 +1,5 @@
 const contributors = require('./lib/contributors_api');
+const fs = require('fs');
 
 console.log('------------------------------------------');
 console.log('| Welcome to the GitHub Avatar Downloader |');
@@ -9,10 +10,15 @@ if (process.argv.length !== 4) {
 }
 const owner = process.argv[2];
 const repo = process.argv[3];
+const DEST_PATH = './avatars';
 
 contributors.getRepoContributors(owner, repo, (err, contribs) => {
   if (err) {
     throw err;
+  }
+  if (!fs.existsSync(DEST_PATH)) {
+    console.log('=> Created directory:', DEST_PATH);
+    fs.mkdirSync(DEST_PATH);
   }
   if (contribs.message === 'Not Found') {
     throw 'The provided owner/repo does not exist';
