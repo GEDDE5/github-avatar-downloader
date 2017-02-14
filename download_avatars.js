@@ -1,24 +1,21 @@
-var request = require('request');
-var fs = require('fs');
+const request = require('request');
+const fs = require('fs');
 
-var GITHUB_USER = 'GEDDE5';
-var GITHUB_TOKEN = '4f8e924b6235e2548083b44e2d1ac748349498fc';
-var USER_AGENT = GITHUB_USER;
+const GITHUB_USER = 'GEDDE5';
+const GITHUB_TOKEN = '4f8e924b6235e2548083b44e2d1ac748349498fc';
+const USER_AGENT = GITHUB_USER;
 
 function downloadImageByURL(url, filePath) {
-  request.get(url)
-    .on('error', function(err) {
+  request.get(url, function(err) {
+    if (err) {
       throw err;
-    })
-    .pipe(fs.createWriteStream(filePath))
-    .on('finish', function() {
-      console.log('Download of ' + filePath + ' complete');
-    });
+    }
+  })
+         .pipe(fs.createWriteStream(filePath));
 }
 
 function getRepoContributors(repoOwner, repoName, cb) {
   let requestURL = `https://${GITHUB_USER}:${GITHUB_TOKEN}@api.github.com/repos/${repoOwner}/${repoName}/contributors`;
-
   let options = {
     url: requestURL,
     headers: { 'User-Agent': USER_AGENT }
@@ -41,14 +38,11 @@ function cb(err, result) {
 }
 
 // Ensures user provides two arguments
-var owner;
-var repo;
 if (process.argv.length !== 4) {
-  throw 'Error: Two arguments required: node download_avatars.js <repo owner> <repo name>';
-} else {
-  owner = process.argv[2];
-  repo = process.argv[3];
+  throw 'Error: Two arguments required';
 }
+const owner = process.argv[2];
+const repo = process.argv[3];
 
 getRepoContributors(owner, repo, cb);
 
