@@ -1,5 +1,9 @@
 const contributors = require('./lib/contributors_api');
 
+console.log('------------------------------------------');
+console.log('| Welcome to the GitHub Avatar Downloader |');
+console.log('------------------------------------------');
+
 if (process.argv.length !== 4) {
   throw 'Error: Two arguments required';
 }
